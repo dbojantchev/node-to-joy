@@ -4,12 +4,12 @@
 
 module.exports = Mongo;
 
-function Mongo(){
+function Mongo(database){
     var self = this;
     console.log('Initializing Mongo');
     self.MongoClient = require('mongodb').MongoClient;
 
-    self.MongoClient.connect("mongodb://localhost:27017/devices", function(err, db) {
+    self.MongoClient.connect("mongodb://localhost:27017/" + database, function(err, db) {
         if (!err) {
             console.log("We are connected");
             self.db = db;
@@ -42,6 +42,29 @@ Mongo.prototype.getDeviceData = function(cb){
         });
     });
 };
+
+Mongo.prototype.getCollection = function(collectionName, cb){
+    console.log('getCollection: ' + collectionName);
+
+    this.db.collection(collectionName, function(err, collection) {
+
+        var Result = [];
+        console.log(collectionName+"=" + collection);
+        var cursor = collection.find({});
+        cursor.each(function(err, collectionObj){
+            if(err) {
+                return;
+            }
+            if(collectionObj === null) {
+                cb(Result);
+            }
+
+            Result.push(collectionObj);
+            console.log("collectionObj=" + collectionObj);
+        });
+    });
+};
+
 
 Mongo.prototype.getDeviceDetail = function(){
     console.log('Mongo getDeviceDetail');

@@ -5,33 +5,23 @@ angular.module('responsiveList', [])
                 getDeviceList : function(){
                     return $http({method: 'GET', url: '/api/getDeviceData?cachebuster=' + (new Date()).getTime()  });
                 },
-
-                getCreditInfo : function(){
-                    /* to use the real method when ready */
-                    return $http({method: 'GET', url: './data/creditInfo.json'});
-                    //return $http({method: 'GET', url: 'http://ua-rest.902labs.com/creditInfo'});
+                getClasses : function(){
+                    return $http({method: 'GET', url: '/api/getClasses?cachebuster=' + (new Date()).getTime()  });
                 },
-                getAllotmentData : function(){
-                    /* to use the real method when ready */
-                    return $http({method: 'GET', url: './data/allotment.json'});
-                    //return $http({method: 'GET', url: 'http://ua-rest.902labs.com/allotment'});
-                },
-                getBillingAddress : function(){
-                    /* to use the real method when ready */
-                    return $http({method: 'GET', url: './data/billingAddress.json'});
-                    //return $http({method: 'GET', url: 'http://ua-rest.902labs.com/billingAddress'});
+                getStudents : function(){
+                    return $http({method: 'GET', url: '/api/getStudents?cachebuster=' + (new Date()).getTime()  });
                 }
             };
         }
     ])
-    .controller('responsiveListController', ['$scope', '$http', '$apiService',
+    .controller('responsiveListController', ['$scope', '$http', '$q', '$apiService',
 
-        function ($scope, $http, $apiService) {
+        function ($scope, $http, $q, $apiService) {
             $scope.deviceList = [];
 
             $scope.textSearch = '';
 
-            $scope.loadData = function total() {
+            $scope.loadDeviceData = function total() {
                 $apiService.getDeviceList().
                     success(function(data, status, headers, config) {
                         $scope.deviceList = data;
@@ -40,19 +30,24 @@ angular.module('responsiveList', [])
                     error(function(data, status, headers, config) {
                         console.log('Sorry, the device list could not be loaded');
                     });
-                /*
-               $http({method: 'GET', url: '/api/getDeviceData?cachebuster=' + (new Date()).getTime()  }).
-                   success(function(data, status, headers, config) {
-                        $scope.deviceList = data;
-                        console.log('$scope.loadData success');
-                   }).
-                   error(function(data, status, headers, config) {
-                        console.log('Sorry, the device list could not be loaded');
-                   });
-                   */
-
             };
 
-            $scope.loadData();
+            $scope.loadAllData = function () {
+
+                var allDataPromise = $q.all([
+                    $apiService.getDeviceList(),
+                    $apiService.getClasses(),
+                    $apiService.getStudents()
+                ]);
+
+                allDataPromise.then(function(dataList) {
+                    console.log('allDataPromise done');
+                    $scope.deviceList = dataList[0].data;
+                });
+            };
+
+          /* $scope.loadDeviceData(); */
+
+            $scope.loadAllData();
         }]
     );
