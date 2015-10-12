@@ -1,30 +1,5 @@
-# node-to-joy
-This is a basic responsive webapp utilizing Angular, Bootstrap and jQuery based on the Node.js+MongoDB server ecosystem.
-Essentially the previous project ResponsiveFoundation has been ported to Node.js.
-
-Dependencies: 
-
-1) You need ?ongoDB installed.
-2) Load the file into MondoDB
-
-To start the app use: 
-
-	npm start
-
-To run in the browser:
-
-	http://localhost:3000/responsiveList
-
-In MongoDB
-
-1) Create database
-
-    use devices
-
-2) Use this statement to populate the MongoDB database.
-
- db.devices.insert(
-[
+db.devices.insert(
+    [
     {
         "serialNumber": 5000367337,
         "confirmationCode": "635364-23",
@@ -251,4 +226,5 @@ In MongoDB
     }
 ]
 )
+
 
