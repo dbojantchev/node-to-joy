@@ -2,8 +2,6 @@
  * Created by dimitar on 2/8/15.
  */
 
-module.exports = Mongo;
-
 function Mongo(database){
     var self = this;
     console.log('Initializing Mongo');

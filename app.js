@@ -4,10 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var api;
+var DATABASE = 'MongoDB';
+    DATABASE = 'SqlServer';
 
 var routes = require('./routes/index');
 var users  = require('./routes/users');
-var api    = require('./routes/apiRoute');
+
+if(DATABASE === 'MongoDB') {
+    api = require('./routes/apiRouteMongo');
+} else
+if(DATABASE === 'SqlServer') {
+    api = require('./routes/apiRouteSqlServer');
+}
+
 var responsiveList    = require('./routes/responsiveListRoute');
 var responsiveDetail  = require('./routes/responsiveDetailRoute');
 

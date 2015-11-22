@@ -36,8 +36,8 @@ angular.module('responsiveList', [])
 
                 var allDataPromise = $q.all([
                     $apiService.getDeviceList(),
-                    $apiService.getClasses(),
-                    $apiService.getStudents()
+                   // $apiService.getClasses(),
+                  //  $apiService.getStudents()
                 ]);
 
                 allDataPromise.then(function(dataList) {
